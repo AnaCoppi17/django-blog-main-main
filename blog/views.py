@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render,  get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
@@ -14,7 +16,7 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from blog.models import Post # Acrescentar
-
+@login_required 
 def index(request):
     # return HttpResponse('Olá Django - index')
     return render(request, 'index.html', {'titulo': 'Últimos Artigos'})
@@ -64,7 +66,7 @@ def get_post(request, post_id):
     response['Access-Control-Allow-Origin'] = '*' # requisição de qualquer origem
     return response
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
     template_name = 'post/post_form.html'
     # fields = ('body_text', )
