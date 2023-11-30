@@ -1,9 +1,22 @@
-from django import forms
-from django.contrib.auth import get_user_model
-User = get_user_model() # obtém o model padrão para usuários do Django
-class AccountSignupForm(forms.ModelForm): # define um formulário para registro
-    password = forms.CharField(label="Senha", max_length=50,
-        widget=forms.PasswordInput())
-class Meta:
-    model = User # conecta o form com o model padrão de usuário
-    fields = ('username', 'email', 'password', ) # campos do model a exibir
+from django.db import models
+
+# Create your models here.
+
+from django.contrib.auth.models import AbstractUser
+import os
+from uuid import uuid4
+
+def safe_rename(instance, filename): # função para renomear o arquivo de forma segura
+    extension = filename.split('.')[-1]
+    filename = f'{uuid4().hex}.{extension}'
+    return os.path.join('images', filename)
+
+class CustomUser(AbstractUser): # herda o model User base padrão do Django
+    data_nascimento = models.DateField("Data de Nascimento", null=True, blank=True)
+    cpf = models.CharField("CPF", max_length=11, null=True, blank=True)
+    imagem = models.FileField(
+        upload_to=safe_rename,
+        default=None,
+        null=True
+    )
+

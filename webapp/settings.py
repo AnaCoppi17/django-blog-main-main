@@ -1,6 +1,5 @@
-import os
+import os # Acrescentar no topo do arquivo, na primeira linha
 from django.contrib.messages import constants as messages
- # Acrescentar no topo do arquivo, na primeira linha
 
 """
 Django settings for webapp project.
@@ -42,10 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
-    'django_extensions', 
+    'django_extensions', # Acrescentar
     'accounts.apps.AccountsConfig',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,8 +120,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = '/admin'
-LOGOUT_REDIRECT_URL = '/admin'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -146,3 +142,19 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+LOGIN_REDIRECT_URL = '/admin'
+LOGOUT_REDIRECT_URL = '/admin'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+MEDIA_URL = '/media/' # Caminho para servir os arquivos de mídia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files/') # Armazenamento dos arquivos
+
+# Serviço de Email
+EMAIL_BACKEND = 'django.core.email.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '<fornecido na aula>'
+EMAIL_HOST_PASSWORD = '<fornecido na aula>'
